@@ -6,25 +6,42 @@ import { BoxGeometry } from "three";
  */
 export default class Prism {
 
-      height;
-      width;
-      depth;
-      geometry;
-      material;
       prism;
+      orientation; // true: standing, false: laying
 
-      constructor(height, width, depth) {
-            this.height = height;
-            this.width = width;
-            this.depth = depth;
-            this.geometry = new BoxGeometry(height, width, depth);
-            this.material = new THREE.MeshPhongMaterial({
+      constructor(width, height, depth, startPosition) {
+            var geometry = new BoxGeometry(width, height, depth);
+            geometry.applyMatrix4( new THREE.Matrix4().makeTranslation( width / 2, height / 2, depth / 2 ) );
+            var material = new THREE.MeshPhongMaterial({
                   color: 0x39ff14,
                   emissive: 0x072534,
                   side: THREE.DoubleSide,
                   flatShading: true,
                 });
-            this.prism = new THREE.Mesh(this.geometry, this.material);
+            this.prism = new THREE.Mesh(geometry, material);
+
+            this.prism.position.x = startPosition[0];
+            this.prism.position.z = startPosition[1];
+
+            this.orientation = true; 
       }
+
+      moveLeft() {
+
+      }
+
+      moveRight() {
+
+      }
+
+      moveDown() {
+
+      }
+
+      moveUp() {
+            
+      }
+
+
 }
 
