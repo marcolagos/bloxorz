@@ -49,7 +49,6 @@ export default class Prism {
 
             this.#orientation = true;
       }
-
       
 
       moveLeft() {
