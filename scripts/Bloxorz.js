@@ -32,8 +32,8 @@ class Bloxorz {
                   0.1,
                   1000
             );
-            this.camera.position.z = 30;
-            this.camera.position.y = 15;
+            this.camera.position.y = 50;
+            this.camera.position.x = -20;
 
             var lights = [];
             lights[0] = new THREE.PointLight(0xffffff, 1, 0);
@@ -77,15 +77,14 @@ class Bloxorz {
 
 const level = {
       one: [
-              [0,0,0,null,null,null,null,null,null,null,null], 
-              [0,1,0,0,0,0,null,null,null,null,null],
-              [0,0,0,0,0,0,0,0,0,null,null],
-              [null,0,0,0,0,0,0,0,0,0,0],
-              [null,null,null,null,null,null,0,0,-1,0,0],
-              [null,null,null,null,null,null,null,0,0,0,null]
+            [null,null,null,null,null,null,0,0,0,null],
+            [null,null,null,null,null,0,0,-1,0,0],
+            [null,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,null],
+            [0,1,0,0,0,0,null,null,null,null],
+            [0,0,0,null,null,null,null,null,null,null]
             ],
-      two: [],
-            };
+      };
 var bloxorz = new Bloxorz();
 bloxorz.renderLevel(level.one);
 

@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import Prism from "./Prism";
 import Pivot from "./Pivot";
 import Plate from "./Plate";
@@ -10,9 +11,12 @@ export default class Grid {
       #gridWidth;
 
       #startPosition;
-      #endPosition;
+      #start;
 
-      #block;
+      #endPosition;
+      #end;
+
+      block;
       #width = 5;
       #height = 10;
       #depth = 5;
@@ -34,19 +38,36 @@ export default class Grid {
                         this.#pivots[i].push(null);
                         if(this.#level[i][j] === 1) {
                               this.#startPosition = [i * this.#width, j * this.#depth];
+                              this.#start = [i,j];
                         }
                         if(this.#level[i][j] === -1) {
                               this.#endPosition = [i * this.#width, j * this.#depth];
+                              this.#end = [i,j];
                         }
                   }
             }
-            this.placePivots();
+            // this.placePivots();
+            this.placePlates();
             this.placeBlock();
+
       }
 
       placeBlock() {
-            this.#block = new Prism(this.#width, this.#height, this.#depth, this.#startPosition);
-            this.#scene.add(this.#block.prism);
+            this.block = new Prism(this.#width, this.#height, this.#depth, this.#startPosition);
+            this.#scene.add(this.block.prism);
+      }
+
+      placePlates() {
+            var plate, position;
+            for(var i = 0; i < this.#gridWidth; i++) {
+                  for(var j = 0; j < this.#gridLength; j++) {
+                        if(this.#level[i][j] !== null){
+                              position = [i * this.#width, j * this.#depth];
+                              plate = new Plate(this.#width, this.#height / 10, this.#depth, position, this.#level[i][j]);
+                              this.#scene.add(plate.prism);                              
+                        }
+                  }
+            }
       }
       
       placePivots() {
@@ -55,7 +76,7 @@ export default class Grid {
                   for(var j = 0; j < this.#gridLength; j++) {
 
                         if(this.#level[i][j] !== null){
-                              pivot = new Pivot(i * this.#width, j * this.#depth);
+                              pivot = new Pivot([i * this.#width, j * this.#depth]);
                               this.#pivots[i][j] = pivot;
                               this.#scene.add(pivot.pivotShape);                              
                         }
@@ -117,17 +138,17 @@ export default class Grid {
       }
 
       move(key) {
-            if(key === "ArrowRight"){
-                  
-            }
             if(key === "ArrowLeft"){
-                        
+                  this.block.moveLeft();
             }
-            if(key === "ArrowUp"){
-                        
+            if(key === "ArrowRight"){
+                  this.block.moveRight();
             }
             if(key === "ArrowDown"){
-                  
+                  this.block.moveDown();
+            }
+            if(key === "ArrowUp"){
+                  this.block.moveUp();
             }
       }
 }

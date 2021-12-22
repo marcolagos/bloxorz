@@ -9,8 +9,10 @@ export default class Pivot {
       rightChild = null;
       aboveChild = null;
       belowChild = null;
+      position;
 
-      constructor(posX, posY) {
+      constructor(position) {
+            this.position = position;
 
             var geometry = new THREE.SphereGeometry(1);
             var material = new THREE.MeshPhongMaterial({
@@ -19,10 +21,10 @@ export default class Pivot {
                   side: THREE.DoubleSide,
                   flatShading: true,
                 });
-                
+
             this.pivotShape = new THREE.Mesh(geometry, material);
-            this.pivotShape.position.x = posX;
-            this.pivotShape.position.z = posY;
+            this.pivotShape.position.x = position[0];
+            this.pivotShape.position.z = position[1];
       }
 
       setChild(pivot, position) {
@@ -34,8 +36,6 @@ export default class Pivot {
                   this.belowChild = pivot;
             } else if (position === 'above') {
                   this.aboveChild = pivot;
-            } else {
-                  console.log("Child position is invalid")
             }
       }
 }
