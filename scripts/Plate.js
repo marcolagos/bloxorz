@@ -1,8 +1,10 @@
 import * as THREE from 'three';
+import * as CANNON from "cannon";
 
 export default class Plate {
 
       prism;
+      body;
 
       constructor(unit, position, type) {
             
@@ -22,11 +24,16 @@ export default class Plate {
             if(type === -1) {
                   material.wireframe = true;
             }
-
+            
             this.prism = new THREE.Mesh(geometry, material);
 
             this.prism.position.x = position[0];
-            this.prism.position.y -= plateWidth;
+            this.prism.position.y = -plateWidth;
             this.prism.position.z = position[1];
+
+            var shape = new CANNON.Box(new CANNON.Vec3(unit / 2, plateWidth / 2, unit / 2));
+            var mass = 0;
+            this.body = new CANNON.Body({ mass, shape });
+            this.body.position.set(position[0], -plateWidth, position[1]);
       }
 }

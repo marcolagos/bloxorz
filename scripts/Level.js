@@ -4,6 +4,7 @@ import Plate from "./Plate";
 export default class Level {
 
       #scene;
+      #world;
       #level;
 
       #startPosition;
@@ -15,9 +16,10 @@ export default class Level {
       #keys = {};
 
 
-      constructor(scene, level) {
+      constructor(scene, world, level) {
 
             this.#scene = scene;
+            this.#world = world;
             this.#level = level;
 
             var position, type, plate;
@@ -28,6 +30,7 @@ export default class Level {
                               type = this.#level[i][j]
                               plate = new Plate(this.#unit, position, type);
                               this.#scene.add(plate.prism);
+                              this.#world.addBody(plate.body);
                               if(this.#level[i][j] === 1) {
                                     this.#startPosition = position;
                               }
@@ -39,7 +42,7 @@ export default class Level {
             }
             this.#prism = new Prism(this.#unit, this.#startPosition);
             this.#scene.add(this.#prism.prism);
-
+            this.#world.addBody(this.#prism.body);
       }
 
       move(key, type) {
@@ -65,5 +68,11 @@ export default class Level {
                   this.#prism.performRotation('-x');
                   this.#prism.performTranslation('z', [0, null, -1]);
             }
+      }
+
+      updatePhysics() {
+            // this.#prism.prism.position.set(this.#prism.body.position.x, this.#prism.body.position.y, this.#prism.body.position.z);
+            this.#prism.prism.position.copy(this.#prism.body.position);
+            this.#prism.prism.quaternion.copy(this.#prism.body.quaternion);
       }
 }

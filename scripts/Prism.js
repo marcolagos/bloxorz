@@ -1,9 +1,12 @@
 import * as THREE from 'three';
 import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
+import * as CANNON from "cannon";
+
 
 export default class Prism {
 
       prism;
+      body;
       #unit;
 
 
@@ -17,6 +20,7 @@ export default class Prism {
       #negZ = new THREE.Vector3(0,0,-1);
 
       #radians = Math.PI / 2;
+      #degrees = 90;
 
       constructor(unit, startPosition) {
 
@@ -30,25 +34,44 @@ export default class Prism {
             this.prism = new THREE.Mesh(geometry, material);
 
             this.prism.position.x = startPosition[0] + unit / 2;
-            this.prism.position.z = startPosition[1] + unit / 2;
             this.prism.position.y = unit;
+            this.prism.position.z = startPosition[1] + unit / 2;
+
+            var shape = new CANNON.Box(new CANNON.Vec3(unit / 2, unit, unit / 2));
+            var mass = 0;
+            this.body = new CANNON.Body({ mass, shape });
+            this.body.position.set(startPosition[0] + unit / 2, unit, startPosition[1] + unit / 2);
       }
       
       performRotation(axis) {
             var vector;
+            var bodyRotation;
             if(axis === '+x') {
                   vector = this.#posX
+                  bodyRotation = new CANNON.Quaternion();
+                  bodyRotation.setFromAxisAngle(new CANNON.Vec3(1,0,0), this.#radians);
+                  this.body.quaternion = bodyRotation.mult(this.body.quaternion);
             }
             if(axis === '-x') {
                   vector = this.#negX
+                  bodyRotation = new CANNON.Quaternion();
+                  bodyRotation.setFromAxisAngle(new CANNON.Vec3(-1,0,0), this.#radians);
+                  this.body.quaternion = bodyRotation.mult(this.body.quaternion);
             }
             if(axis === '+z') {
                   vector = this.#posZ
+                  bodyRotation = new CANNON.Quaternion();
+                  bodyRotation.setFromAxisAngle(new CANNON.Vec3(0,0,1), this.#radians)
+                  this.body.quaternion = bodyRotation.mult(this.body.quaternion);
             }
             if(axis === '-z') {
                   vector = this.#negZ
+                  bodyRotation = new CANNON.Quaternion();
+                  bodyRotation.setFromAxisAngle(new CANNON.Vec3(0,0,-1), this.#radians);
+                  this.body.quaternion = bodyRotation.mult(this.body.quaternion);
             }
             this.prism.rotateOnWorldAxis(vector, this.#radians);
+            
       }
 
       performTranslation(key, [x, y, z]) {
@@ -64,11 +87,14 @@ export default class Prism {
                   y = 0;
                   z = (z === 0) ? 0 : (z === -1 ? -2/3 : 2/3);
             }
-            console.log(x,y,z);
-            console.log(this.#unit * x * 3 / 2, this.#unit * y / 2, this.#unit * z * 3 / 2)
+
             this.prism.position.x += this.#unit * x * 3 / 2;
             this.prism.position.y += this.#unit * y / 2;
             this.prism.position.z += this.#unit * z * 3 / 2;
+
+            this.body.position.x += this.#unit * x * 3 / 2;
+            this.body.position.y += this.#unit * y / 2;
+            this.body.position.z += this.#unit * z * 3 / 2;
       }
 }
 

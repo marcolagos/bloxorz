@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Level from "./Level";
+import * as CANNON from "cannon";
 
 export default class Bloxorz {
 
@@ -9,14 +10,21 @@ export default class Bloxorz {
       renderer;
       controls;
 
+      world;
+
+      gui;
+
       #level;
 
       constructor() {
             this.#makeScene();
-            // this.#addControls();
-            // this.#addAxes();
+            this.#makeWorld();
+            this.#addControls();
+            this.#addAxes();
             // this.#addGrid();
       }
+
+      
 
       #makeScene() {
             this.scene = new THREE.Scene();
@@ -52,6 +60,13 @@ export default class Bloxorz {
             this.scene.add(lights[3]);
       }
 
+      #makeWorld() {
+            this.world = new CANNON.World();
+            this.world.gravity.set(0,-10,0);
+            this.world.broadphase = new CANNON.NaiveBroadphase();
+            this.world.solver.iterations = 40;
+      }
+
       #addControls() {
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
       }
@@ -67,7 +82,7 @@ export default class Bloxorz {
       }
 
       renderLevel(level) {
-            this.#level = new Level(this.scene, level);
+            this.#level = new Level(this.scene, this.world, level);
       }
 
       move() {
@@ -76,5 +91,18 @@ export default class Bloxorz {
                         this.#level.move(press.key, press.type);
                   })
             );
+      }
+
+      updatePhysics() {
+            this.world.step(1 / 60);
+            this.#level.updatePhysics();
+      }
+
+      resize() {
+            window.addEventListener('resize', () => {
+                this.camera.aspect = window.innerWidth / window.innerHeight;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+            });
       }
 }
