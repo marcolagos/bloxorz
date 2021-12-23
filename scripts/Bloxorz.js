@@ -1,19 +1,19 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Grid from "./Grid";
+import Level from "./Level";
 
-class Bloxorz {
+export default class Bloxorz {
 
       camera;
       scene;
       renderer;
       controls;
 
-      #grid;
+      #level;
 
       constructor() {
             this.#makeScene();
-            this.#addControls();
+            // this.#addControls();
             // this.#addAxes();
             // this.#addGrid();
       }
@@ -31,22 +31,25 @@ class Bloxorz {
                   0.1,
                   1000
             );
-            this.camera.position.x = 20;
-            this.camera.position.y = 50;
-            this.camera.position.z = 30;
+            this.camera.position.x = 25;
+            this.camera.position.y = 25;
+            this.camera.position.z = 50;
+            this.camera.lookAt(new THREE.Vector3(25,0,20));
 
             var lights = [];
-            lights[0] = new THREE.PointLight(0xffffff, 1, 0);
-            lights[1] = new THREE.PointLight(0xffffff, 1, 0);
-            lights[2] = new THREE.PointLight(0xffffff, 1, 0);
+            lights[0] = new THREE.PointLight(0xffffff, 0.15);
+            lights[1] = new THREE.PointLight(0xffffff, 0.3);
+            lights[2] = new THREE.PointLight(0xffffff, 0.45);
+            lights[3] = new THREE.AmbientLight(0xffffff, 0.5);
 
-            lights[0].position.set(0, 200, 0);
-            lights[1].position.set(100, 200, 100);
-            lights[2].position.set(-100, -200, -100);
+            lights[0].position.set(-40, 0, 0);
+            lights[1].position.set(40, 0, 0);
+            lights[2].position.set(0, 0, 40);
 
-            // this.scene.add(lights[0]);
+            this.scene.add(lights[0]);
             this.scene.add(lights[1]);
             this.scene.add(lights[2]);
+            this.scene.add(lights[3]);
       }
 
       #addControls() {
@@ -54,59 +57,24 @@ class Bloxorz {
       }
 
       #addAxes() {
-            var axesHelper = new THREE.AxesHelper(50);
+            var axesHelper = new THREE.AxesHelper(200);
             this.scene.add(axesHelper);
       }
 
       #addGrid() {
-            var gridHelper = new THREE.GridHelper(50);
+            var gridHelper = new THREE.GridHelper(200, 100);
             this.scene.add(gridHelper);
       }
 
       renderLevel(level) {
-            this.#grid = new Grid(this.scene, level);
+            this.#level = new Level(this.scene, level);
       }
 
-      keydown() {
-            window.addEventListener('keydown', (event) => {
-                  this.#grid.keyDown(event.key);
-                  this.#grid.move();
-            })
+      move() {
+            ['keydown','keyup'].forEach((event) => 
+                  window.addEventListener(event, (press) => {
+                        this.#level.move(press.key, press.type);
+                  })
+            );
       }
-
-      keyup() {
-            window.addEventListener('keyup', (event) => {
-                  this.#grid.keyUp(event.key);
-            })
-      }
-
 }
-
-const level = {
-      one: [
-            [0,0,0,null,null,null],
-            [0,1,0,0,null,null],
-            [0,0,0,0,null,null],
-            [null,0,0,0,null,null],
-            [null,0,0,0,null,null],
-            [null,null,0,0,0,null],
-            [null,null,0,0,0,0],
-            [null,null,0,0,-1,0],
-            [null,null,0,0,0,0],
-            [null,null,null,0,0,null]
-      ]
-      };
-var bloxorz = new Bloxorz();
-bloxorz.renderLevel(level.one);
-
-function animate() {
-      requestAnimationFrame(animate);
-      bloxorz.controls.update();
-      bloxorz.renderer.render(bloxorz.scene, bloxorz.camera);
-}
-
-bloxorz.keydown();
-bloxorz.keyup();
-animate();
-
-

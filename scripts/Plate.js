@@ -1,14 +1,15 @@
 import * as THREE from 'three';
-import { BoxGeometry } from "three";
 
 export default class Plate {
 
       prism;
 
-      constructor(width, height, depth, position, type) {
+      constructor(unit, position, type) {
             
-            var geometry = new BoxGeometry(width, height, depth);
-            geometry.applyMatrix4( new THREE.Matrix4().makeTranslation( width / 2, height / 2, depth / 2 ) );
+            var plateWidth = unit * 2 / 15
+
+            var geometry = new THREE.BoxGeometry(unit, plateWidth, unit);
+            geometry.applyMatrix4( new THREE.Matrix4().makeTranslation( unit / 2, plateWidth / 2, unit / 2 ) );
             
             var loader = new THREE.TextureLoader();
             var material = new THREE.MeshBasicMaterial({
@@ -25,7 +26,7 @@ export default class Plate {
             this.prism = new THREE.Mesh(geometry, material);
 
             this.prism.position.x = position[0];
-            this.prism.position.y -= height;
+            this.prism.position.y -= plateWidth;
             this.prism.position.z = position[1];
       }
 }
