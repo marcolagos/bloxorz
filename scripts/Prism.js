@@ -38,7 +38,7 @@ export default class Prism {
             this.prism.position.z = startPosition[1] + unit / 2;
 
             var shape = new CANNON.Box(new CANNON.Vec3(unit / 2, unit, unit / 2));
-            var mass = 0;
+            var mass = 1;
             this.body = new CANNON.Body({ mass, shape });
             this.body.position.set(startPosition[0] + unit / 2, unit, startPosition[1] + unit / 2);
       }
