@@ -20,7 +20,7 @@ export default class Bloxorz {
             this.#makeScene();
             this.#makeWorld();
             // this.#addControls();
-            // this.#addAxes();
+            this.#addAxes();
             // this.#addGrid();
       }
 
@@ -62,7 +62,7 @@ export default class Bloxorz {
 
       #makeWorld() {
             this.world = new CANNON.World();
-            this.world.gravity.set(0,-10,0);
+            this.world.gravity.set(0,-30,0);
             this.world.broadphase = new CANNON.NaiveBroadphase();
             this.world.solver.iterations = 40;
       }

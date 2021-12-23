@@ -26,17 +26,19 @@ export default class Level {
             for(var i = 0; i < this.#level.length; i++) {
                   for(var j = 0; j < this.#level[0].length; j++) {
                         if(this.#level[i][j] !== null){
-                              position = [i * this.#unit, j * this.#unit];
-                              type = this.#level[i][j]
-                              plate = new Plate(this.#unit, position, type);
-                              this.#scene.add(plate.prism);
-                              this.#world.addBody(plate.body);
-                              if(this.#level[i][j] === 1) {
-                                    this.#startPosition = position;
-                              }
-                              if(this.#level[i][j] === -1) {
-                                    this.#endPosition = position;
-                              }                              
+                              type = this.#level[i][j];
+                              if(type !== -1) {
+                                    position = [i * this.#unit, j * this.#unit];
+                                    plate = new Plate(this.#unit, position, type);
+                                    this.#scene.add(plate.prism);
+                                    this.#world.addBody(plate.body);
+                                    if(this.#level[i][j] === 1) {
+                                          this.#startPosition = position;
+                                    }
+                                    if(this.#level[i][j] === -1) {
+                                          this.#endPosition = position;
+                                    }         
+                              }                     
                         }
                   }
             }
