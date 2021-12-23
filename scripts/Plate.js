@@ -27,7 +27,5 @@ export default class Plate {
             this.prism.position.x = position[0];
             this.prism.position.y -= height;
             this.prism.position.z = position[1];
-
-
       }
 }

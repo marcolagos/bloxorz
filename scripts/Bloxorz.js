@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 import Grid from "./Grid";
 
 class Bloxorz {
@@ -15,8 +14,8 @@ class Bloxorz {
       constructor() {
             this.#makeScene();
             this.#addControls();
-            this.#addAxes();
-            this.#addGrid();
+            // this.#addAxes();
+            // this.#addGrid();
       }
 
       #makeScene() {
@@ -32,8 +31,9 @@ class Bloxorz {
                   0.1,
                   1000
             );
+            this.camera.position.x = 20;
             this.camera.position.y = 50;
-            this.camera.position.x = -20;
+            this.camera.position.z = 30;
 
             var lights = [];
             lights[0] = new THREE.PointLight(0xffffff, 1, 0);
@@ -44,7 +44,7 @@ class Bloxorz {
             lights[1].position.set(100, 200, 100);
             lights[2].position.set(-100, -200, -100);
 
-            this.scene.add(lights[0]);
+            // this.scene.add(lights[0]);
             this.scene.add(lights[1]);
             this.scene.add(lights[2]);
       }
@@ -67,9 +67,16 @@ class Bloxorz {
             this.#grid = new Grid(this.scene, level);
       }
 
-      move() {
+      keydown() {
             window.addEventListener('keydown', (event) => {
-                  this.#grid.move(event.key);
+                  this.#grid.keyDown(event.key);
+                  this.#grid.move();
+            })
+      }
+
+      keyup() {
+            window.addEventListener('keyup', (event) => {
+                  this.#grid.keyUp(event.key);
             })
       }
 
@@ -77,13 +84,17 @@ class Bloxorz {
 
 const level = {
       one: [
-            [null,null,null,null,null,null,0,0,0,null],
-            [null,null,null,null,null,0,0,-1,0,0],
-            [null,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,null],
-            [0,1,0,0,0,0,null,null,null,null],
-            [0,0,0,null,null,null,null,null,null,null]
-            ],
+            [0,0,0,null,null,null],
+            [0,1,0,0,null,null],
+            [0,0,0,0,null,null],
+            [null,0,0,0,null,null],
+            [null,0,0,0,null,null],
+            [null,null,0,0,0,null],
+            [null,null,0,0,0,0],
+            [null,null,0,0,-1,0],
+            [null,null,0,0,0,0],
+            [null,null,null,0,0,null]
+      ]
       };
 var bloxorz = new Bloxorz();
 bloxorz.renderLevel(level.one);
@@ -94,7 +105,8 @@ function animate() {
       bloxorz.renderer.render(bloxorz.scene, bloxorz.camera);
 }
 
-bloxorz.move();
+bloxorz.keydown();
+bloxorz.keyup();
 animate();
 
 

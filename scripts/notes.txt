@@ -1,0 +1,57 @@
+ move(key) {
+            console.log(key);
+            if(key === "ArrowLeft"){
+                  this.block.moveLeft();
+            }
+            if(key === "ArrowRight"){
+                  this.block.moveRight();
+            }
+            if(key === "ArrowDown"){
+                  this.block.moveDown();
+            }
+            if(key === "ArrowUp"){
+                  this.block.moveUp();
+            }
+      }
+
+      moveLeft() {
+            console.log(this.#rotationAxes.ArrowLeft);
+            this.performRotation(this.#rotationAxes.ArrowLeft);
+      }
+
+      moveRight() {
+            console.log(this.#rotationAxes.ArrowRight);
+            this.performRotation(this.#rotationAxes.ArrowRight);
+      }
+
+      moveDown() {
+            console.log(this.#rotationAxes.ArrowDown);
+            this.performRotation(this.#rotationAxes.ArrowDown);
+      }
+
+      moveUp() {
+            console.log(this.#rotationAxes.ArrowUp);
+            this.performRotation(this.#rotationAxes.ArrowUp);    
+      }
+
+
+      #rotationAxes;
+      #transitionAxes;
+
+      #orientation;
+
+                  this.#rotationAxes = {
+                  ArrowUp: '-y',
+                  ArrowDown: '+y',
+                  ArrowRight: '+x',
+                  ArrowLeft: '+z',
+            };
+
+            this.#transitionAxes = {
+                  ArrowUp: [0, -1, 1],
+                  ArrowDown: [0, -1, -1],
+                  ArrowRight: [1, -1, 0],
+                  ArrowLeft: [-1, -1, 0],
+            }
+
+            this.#orientation = true;
