@@ -19,8 +19,8 @@ export default class Bloxorz {
       constructor() {
             this.#makeScene();
             this.#makeWorld();
-            this.#addControls();
-            this.#addAxes();
+            // this.#addControls();
+            // this.#addAxes();
             // this.#addGrid();
       }
 

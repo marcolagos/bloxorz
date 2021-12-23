@@ -71,7 +71,6 @@ export default class Level {
       }
 
       updatePhysics() {
-            // this.#prism.prism.position.set(this.#prism.body.position.x, this.#prism.body.position.y, this.#prism.body.position.z);
             this.#prism.prism.position.copy(this.#prism.body.position);
             this.#prism.prism.quaternion.copy(this.#prism.body.quaternion);
       }
