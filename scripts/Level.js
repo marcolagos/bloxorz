@@ -11,16 +11,18 @@ export default class Level {
       #endPosition;
 
       #prism;
-      #unit = 5;
+      #unit;
 
       #keys = {};
 
 
-      constructor(scene, world, level) {
+      constructor(scene, world, level, unit) {
+
 
             this.#scene = scene;
             this.#world = world;
             this.#level = level;
+            this.#unit = unit;
 
             var position, type, plate;
             for(var i = 0; i < this.#level.length; i++) {

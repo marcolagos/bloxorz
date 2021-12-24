@@ -15,12 +15,13 @@ export default class Bloxorz {
       gui;
 
       #level;
+      #unit = 5;
 
       constructor() {
             this.#makeScene();
             this.#makeWorld();
             // this.#addControls();
-            this.#addAxes();
+            // this.#addAxes();
             // this.#addGrid();
       }
 
@@ -39,11 +40,6 @@ export default class Bloxorz {
                   0.1,
                   1000
             );
-            this.camera.position.x = 25;
-            this.camera.position.y = 25;
-            this.camera.position.z = 50;
-            this.camera.lookAt(new THREE.Vector3(25,0,20));
-
             var lights = [];
             lights[0] = new THREE.PointLight(0xffffff, 0.15);
             lights[1] = new THREE.PointLight(0xffffff, 0.3);
@@ -82,7 +78,13 @@ export default class Bloxorz {
       }
 
       renderLevel(level) {
-            this.#level = new Level(this.scene, this.world, level);
+            var x = Math.round(level.length / 2) * this.#unit;
+            var z = Math.round(level[0].length / 2) * this.#unit;
+            this.camera.position.x = x;
+            this.camera.position.y = x / 1.25;
+            this.camera.position.z = z * 4;
+            this.camera.lookAt(new THREE.Vector3(x,0,z));
+            this.#level = new Level(this.scene, this.world, level, this.#unit);
       }
 
       move() {

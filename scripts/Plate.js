@@ -13,13 +13,29 @@ export default class Plate {
             var geometry = new THREE.BoxGeometry(unit, plateWidth, unit);
             geometry.applyMatrix4( new THREE.Matrix4().makeTranslation( unit / 2, plateWidth / 2, unit / 2 ) );
             
-            var loader = new THREE.TextureLoader();
-            var material = new THREE.MeshBasicMaterial({
-                  color: 0xFFFFFF,
-                  map: loader.load('../assets/concrete.jpg'),
-                  side: THREE.DoubleSide,
-                  wireframe: false,
-            });
+            var material, loader;
+            console.log(type);
+            if(type === 0 || type === 1){
+                  loader = new THREE.TextureLoader();
+                  material = new THREE.MeshBasicMaterial({
+                        color: 0xFFFFFF,
+                        map: loader.load('../assets/concrete.jpg'),
+                        side: THREE.DoubleSide,
+                        wireframe: false,
+                  });
+            } else if(type === 'o') {
+                  material = new THREE.MeshLambertMaterial({
+                        color: 0x0000FF,
+                        side: THREE.DoubleSide,
+                        wireframe: false,
+                  })
+            } else if (type === 'x') {
+                  material = new THREE.MeshLambertMaterial({
+                        color: 0x00FF00,
+                        side: THREE.DoubleSide,
+                        wireframe: false,
+                  })
+            }
             
             this.prism = new THREE.Mesh(geometry, material);
 

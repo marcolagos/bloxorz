@@ -30,6 +30,7 @@ export default class Prism {
             var material = new THREE.MeshLambertMaterial({
                   color: 0x7E2D00,
                   side: THREE.DoubleSide,
+                  wireframe: false,
                 });
             this.prism = new THREE.Mesh(geometry, material);
 
@@ -70,7 +71,8 @@ export default class Prism {
                   bodyRotation.setFromAxisAngle(new CANNON.Vec3(0,0,-1), this.#radians);
                   this.body.quaternion = bodyRotation.mult(this.body.quaternion);
             }
-            this.prism.rotateOnWorldAxis(vector, this.#radians);
+            // this.prism.rotateOnWorldAxis(vector, this.#radians);
+            this.prism.rotateX(this.#radians);
             
       }
 
